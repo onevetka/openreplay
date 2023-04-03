@@ -21,6 +21,7 @@ import NoCards from '../../../svg/ca-no-cards.svg';
 import NoSearchResults from '../../../svg/ca-no-search-results.svg';
 import NoDashboards from '../../../svg/ca-no-dashboards.svg';
 import NoRecordings from '../../../svg/ca-no-recordings.svg';
+import NoFFlags from '../../../svg/no-fflags.svg';
 
 export enum ICONS {
     DASHBOARD_ICON = 'dashboard-icn',
@@ -45,6 +46,7 @@ export enum ICONS {
     NO_RECORDINGS = 'ca-no-recordings',
     NO_SEARCH_RESULTS = 'ca-no-search-results',
     NO_DASHBOARDS = 'ca-no-dashboards',
+    NO_FFLAGS = 'no-fflags'
 }
 
 interface Props {
@@ -99,6 +101,8 @@ function AnimatedSVG(props: Props) {
                 return <img style={{ width: size + 'px' }} src={NoDashboards} />;
             case ICONS.NO_RECORDINGS:
                 return <img style={{ width: size + 'px' }} src={NoRecordings} />;
+            case ICONS.NO_FFLAGS:
+                return <img style={{ width: size + 'px' }} src={NoFFlags} />;
             default:
                 return null;
         }
