@@ -204,6 +204,13 @@ export default class API {
     return this.app.isFeatureActive(feature)
   }
 
+  getFeatureFlags(): string[] {
+    if (this.app === null) {
+      return []
+    }
+    return this.app.getFeatureFlags()
+  }
+
   stop(): string | undefined {
     if (this.app === null) {
       return
