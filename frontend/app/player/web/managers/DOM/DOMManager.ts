@@ -62,6 +62,10 @@ export default class DOMManager extends ListWalker<Message> {
     this.stylesManager = new StylesManager(screen, setCssLoading)
   }
 
+  setStringDict(stringDict: Record<number,string>) {
+    this.stringDict = stringDict
+  }
+
   append(m: Message): void {
     if (m.tp === MType.SetNodeScroll) {
       let scrollManager = this.nodeScrollManagers.get(m.id)
