@@ -43,7 +43,6 @@ export default class DOMManager extends ListWalker<Message> {
   private activeIframeRoots: Map<number, number> = new Map()
   private styleSheets: Map<number, CSSStyleSheet> = new Map()
   private ppStyleSheets: Map<number, PostponedStyleSheet> = new Map()
-  private stringDict: Record<number,string> = {}
 
 
   private upperBodyId: number = -1;
@@ -55,6 +54,7 @@ export default class DOMManager extends ListWalker<Message> {
   constructor(
     private readonly screen: Screen,
     private readonly isMobile: boolean,
+    private stringDict: Record<number,string>,
     public readonly time: number,
     setCssLoading: ConstructorParameters<typeof StylesManager>[1],
   ) {
@@ -189,8 +189,6 @@ export default class DOMManager extends ListWalker<Message> {
         // todo: start from 0-node (sync logic with tracker)
         this.vTexts.clear()
         this.stylesManager.reset()
-        this.activeIframeRoots.clear()
-        this.stringDict = {}
         return
       case MType.CreateTextNode:
         vn = new VText()
@@ -229,14 +227,11 @@ export default class DOMManager extends ListWalker<Message> {
       case MType.SetNodeAttribute:
         this.setNodeAttribute(msg)
         return
-      case MType.StringDict:
-        this.stringDict[msg.key] = msg.value
-        return
       case MType.SetNodeAttributeDict:
-        this.stringDict[msg.nameKey] === undefined && logger.error("No dictionary key for msg 'name': ", msg)
-        this.stringDict[msg.valueKey] === undefined && logger.error("No dictionary key for msg 'value': ", msg)
+        this.stringDict[msg.nameKey] === undefined && logger.error("No dictionary key for msg 'name': ", msg, this.stringDict)
+        this.stringDict[msg.valueKey] === undefined && logger.error("No dictionary key for msg 'value': ", msg, this.stringDict)
         if (this.stringDict[msg.nameKey] === undefined || this.stringDict[msg.valueKey] === undefined ) { return }
-        this.setNodeAttribute({ 
+        this.setNodeAttribute({
           id: msg.id,
           name: this.stringDict[msg.nameKey],
           value: this.stringDict[msg.valueKey],
@@ -423,7 +418,7 @@ export default class DOMManager extends ListWalker<Message> {
     //    - store intemediate virtual dom state
     //    - cancel previous moveReady tasks (is it possible?) if new timestamp is less
     // This function autoresets pointer if necessary (better name?)
-   
+
     await this.moveWait(t, this.applyMessage)
     this.vRoots.forEach(rt => rt.applyChanges()) // MBTODO (optimisation): affected set
 
