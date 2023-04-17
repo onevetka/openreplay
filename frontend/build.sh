@@ -17,6 +17,7 @@ check_prereq() {
     }
 }
 
+chart=frontend
 [[ $1 == ee ]] && ee=true
 [[ $PATCH -eq 1 ]] && {
   image_tag="$(grep -ER ^.ppVersion ../scripts/helmcharts/openreplay/charts/$chart | xargs | awk '{print $2}'  | awk -F. -v OFS=. '{$NF += 1 ; print}')"
