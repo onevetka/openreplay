@@ -57,8 +57,15 @@ function LivePlayer({
     );
     setContextValue({ player, store });
 
-    return () => player.clean();
-  }, [session.sessionId, assistCredentials]);
+    return () => {
+      if (!location.pathname.includes('multiview') || !location.pathname.includes(usedSession.sessionId)) {
+        console.debug('unmount', usedSession.sessionId)
+        playerInst?.clean?.();
+        // @ts-ignore default empty
+        setContextValue(defaultContextValue)
+      }
+    }
+  }, [location.pathname, usedSession.sessionId]);
 
   // LAYOUT (TODO: local layout state - useContext or something..)
   useEffect(() => {
