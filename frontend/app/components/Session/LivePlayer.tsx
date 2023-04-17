@@ -42,6 +42,7 @@ function LivePlayer({
   const [fullView, setFullView] = useState(false);
   const openedFromMultiview = query?.get('multi') === 'true'
   const usedSession = isMultiview ? customSession! : session;
+  let playerInst: ILivePlayerContext['player'];
 
   useEffect(() => {
     if (loadingCredentials || !usedSession.sessionId) return;
@@ -56,6 +57,7 @@ function LivePlayer({
       makeAutoObservable(state)
     );
     setContextValue({ player, store });
+    playerInst = player;
 
     return () => {
       if (!location.pathname.includes('multiview') || !location.pathname.includes(usedSession.sessionId)) {
