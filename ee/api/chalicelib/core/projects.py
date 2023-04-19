@@ -55,6 +55,9 @@ def __create(tenant_id, name):
 
 
 def get_projects(tenant_id, recording_state=False, gdpr=None, recorded=False, stack_integrations=False, user_id=None):
+    recorded = False
+    recording_state = False
+    stack_integrations = False
     with pg_client.PostgresClient() as cur:
         role_query = """INNER JOIN LATERAL (SELECT 1
                         FROM users
@@ -65,7 +68,7 @@ def get_projects(tenant_id, recording_state=False, gdpr=None, recorded=False, st
                           AND users.tenant_id = %(tenant_id)s
                           AND (roles.all_projects OR roles_projects.project_id = s.project_id)
                         LIMIT 1) AS role_project ON (TRUE)"""
-        extra_projection = ""
+        extra_projection = ",'green' AS status"
         extra_join = ""
         if gdpr:
             extra_projection += ',s.gdpr'
