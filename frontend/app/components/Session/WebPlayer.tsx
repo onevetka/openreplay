@@ -27,6 +27,7 @@ function WebPlayer(props: any) {
     closeBottomBlock,
     fullscreen,
     fetchList,
+    startedAt,
   } = props;
   const { notesStore } = useStore();
   const [activeTab, setActiveTab] = useState('');
@@ -56,11 +57,11 @@ function WebPlayer(props: any) {
         WebPlayerInst.pause();
       }
     })
-
+    
     const jumpToTime = props.query.get('jumpto');
     const freeze = props.query.get('freeze')
     if (jumpToTime) {
-      WebPlayerInst.jump(parseInt(jumpToTime));
+      WebPlayerInst.jump(jumpToTime - props.startedAt);
     }
     if (freeze) {
       WebPlayerInst.freeze()
@@ -148,6 +149,7 @@ export default connect(
     fullscreen: state.getIn(['components', 'player', 'fullscreen']),
     showEvents: state.get('showEvents'),
     members: state.getIn(['members', 'list']),
+    startedAt: state.getIn(['sessions', 'current']).startedAt || 0,
   }),
   {
     toggleFullscreen,
