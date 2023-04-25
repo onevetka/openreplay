@@ -15,6 +15,7 @@ exit_err() {
   fi
 }
 
+chart=chalice
 environment=$1
 git_sha=$(git rev-parse --short HEAD)
 image_tag=${IMAGE_TAG:-git_sha}
