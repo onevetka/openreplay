@@ -14,6 +14,7 @@ import { IPlayerContext, PlayerContext, defaultContextValue } from './playerCont
 import { observer } from 'mobx-react-lite';
 import { Note } from "App/services/NotesService";
 import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const TABS = {
   EVENTS: 'User Steps',
@@ -42,8 +43,10 @@ function WebPlayer(props: any) {
     if (!session.sessionId || contextValue.player !== undefined) return;
     fetchList('issues');
 
-    const [WebPlayerInst, PlayerStore] = createWebPlayer(session, (state) =>
-      makeAutoObservable(state)
+    const [WebPlayerInst, PlayerStore] = createWebPlayer(
+      session,
+      (state) => makeAutoObservable(state),
+      toast,
     );
     setContextValue({ player: WebPlayerInst, store: PlayerStore });
     playerInst = WebPlayerInst;
@@ -59,7 +62,7 @@ function WebPlayer(props: any) {
 
     const freeze = props.query.get('freeze')
     if (freeze) {
-      WebPlayerInst.freeze()
+      void WebPlayerInst.freeze()
     }
   }, [session.sessionId]);
 
