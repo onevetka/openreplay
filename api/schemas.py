@@ -1219,8 +1219,8 @@ class LiveSessionsSearchPayloadSchema(_PaginatedSchema):
                 else:
                     i += 1
             for i in values["filters"]:
-                if i.get("type") == LiveFilterType.platform:
-                    i["type"] = LiveFilterType.user_device_type
+                if i.get("type") == LiveFilterType.platform.value:
+                    i["type"] = LiveFilterType.user_device_type.value
         if values.get("sort") is not None:
             if values["sort"].lower() == "startts":
                 values["sort"] = "TIMESTAMP"
